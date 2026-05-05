@@ -620,16 +620,7 @@ function Step2({ form, update, errors }: { form: AssessmentForm; update: Updater
 
       {/* Axial length */}
       <div>
-        <div className="flex items-center gap-2 mb-3">
-          <h3 className="text-[13px] font-medium text-[#111827]">Axial length</h3>
-          <span className="text-[11px] text-[#9CA3AF]">(optional)</span>
-        </div>
-        <div className="flex items-center gap-2.5 p-3 rounded-lg border mb-4" style={{ background: "#EFF6FF", borderColor: "#BFDBFE" }}>
-          <span className="shrink-0"><InfoIcon /></span>
-          <p className="text-[12px]" style={{ color: "#1D4ED8" }}>
-            Axial length improves prediction accuracy by ~18%
-          </p>
-        </div>
+        <h3 className="text-[13px] font-medium text-[#111827] mb-3">Axial length</h3>
         <div className="grid grid-cols-2 gap-4">
           <Field label="Right eye AL (mm)">
             <TextInput value={form.rightAL} onChange={(v) => update("rightAL", v)} placeholder="24.8" />
