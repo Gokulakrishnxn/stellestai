@@ -1,0 +1,1 @@
+// Assessment types placeholder.

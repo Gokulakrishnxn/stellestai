@@ -1,0 +1,1 @@
+// Assessment draft store placeholder.
