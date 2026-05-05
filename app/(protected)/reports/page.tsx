@@ -64,24 +64,6 @@ function FileTextIcon({ color = "#1D9E75" }: { color?: string }) {
   );
 }
 
-function EyeIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
-  );
-}
-
-function LinkIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-    </svg>
-  );
-}
-
 function SearchIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -258,7 +240,7 @@ export default function ReportsPage() {
             <table className="w-full min-w-[1060px]">
               <thead>
                 <tr className="border-b border-[#E5E4DF]">
-                  {["Report", "Patient", "Type", "Generated", "Status", "Actions"].map((head) => (
+                  {["Report", "Patient", "Type", "Generated", "Status"].map((head) => (
                     <th key={head} className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-wider text-[#6B7280] whitespace-nowrap">
                       {head}
                     </th>
@@ -312,52 +294,6 @@ export default function ReportsPage() {
                           <StatusDot color={statusTheme.color} />
                           {statusTheme.label}
                         </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSelectedId(row.id);
-                            }}
-                            className="text-[12px] text-[#1D9E75] hover:underline inline-flex items-center gap-1"
-                          >
-                            <EyeIcon />
-                            View
-                          </button>
-                          {row.status === "Failed" ? (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onRetry(row.id);
-                              }}
-                              className="text-[12px] text-[#D97706] hover:underline"
-                            >
-                              Retry
-                            </button>
-                          ) : (
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                onDownload(row.id);
-                              }}
-                              className="text-[12px] text-[#1D9E75] hover:underline inline-flex items-center gap-1"
-                            >
-                              <DownloadIcon />
-                              Download PDF
-                            </button>
-                          )}
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              navigator.clipboard.writeText(`https://stellest.app/reports/${row.id}`);
-                            }}
-                            className="text-[12px] text-[#1D9E75] hover:underline inline-flex items-center gap-1"
-                          >
-                            <LinkIcon />
-                            Copy link
-                          </button>
-                        </div>
                       </td>
                     </tr>
                   );

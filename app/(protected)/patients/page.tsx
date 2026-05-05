@@ -126,16 +126,6 @@ function ListIcon() {
   );
 }
 
-function DotsIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="5" cy="12" r="1.4" />
-      <circle cx="12" cy="12" r="1.4" />
-      <circle cx="19" cy="12" r="1.4" />
-    </svg>
-  );
-}
-
 function getInitials(name: string) {
   return name
     .split(" ")
@@ -150,7 +140,6 @@ export default function PatientsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterKey>("All patients");
   const [sortBy, setSortBy] = useState<SortKey>("lastSeen");
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
-  const [openRowMenuId, setOpenRowMenuId] = useState<string | null>(null);
 
   const filteredPatients = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -293,7 +282,6 @@ export default function PatientsPage() {
                   "Axial length",
                   "Last assessment",
                   "Treatment",
-                  "Actions",
                 ].map((head) => (
                   <th
                     key={head}
@@ -307,7 +295,6 @@ export default function PatientsPage() {
             <tbody>
               {filteredPatients.map((patient) => {
                 const riskTheme = RISK_BADGE[patient.risk];
-                const menuOpen = openRowMenuId === patient.id;
                 return (
                   <tr
                     key={patient.id}
@@ -362,44 +349,12 @@ export default function PatientsPage() {
                         {patient.treatment}
                       </span>
                     </td>
-                    <td className="px-4 py-2">
-                      <div className="relative flex items-center gap-1.5">
-                        <button
-                          onClick={() => console.log("View patient", patient.id)}
-                          className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity text-[12px] text-[#1D9E75] font-medium border border-[#1D9E75] rounded-md px-2.5 py-1 hover:bg-[#F0FBF7] whitespace-nowrap"
-                        >
-                          View →
-                        </button>
-                        <button
-                          onClick={() => setOpenRowMenuId((prev) => (prev === patient.id ? null : patient.id))}
-                          className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity w-7 h-7 rounded-md border border-[#E5E4DF] text-[#6B7280] hover:bg-[#F3F4F6] flex items-center justify-center"
-                        >
-                          <DotsIcon />
-                        </button>
-                        {menuOpen && (
-                          <div className="absolute right-0 top-full mt-1 w-40 bg-white border border-[#E5E4DF] rounded-lg shadow-sm z-20 overflow-hidden">
-                            {["View profile", "New assessment", "Export report", "Archive"].map((item) => (
-                              <button
-                                key={item}
-                                onClick={() => {
-                                  setOpenRowMenuId(null);
-                                  console.log(item, patient.id);
-                                }}
-                                className="w-full text-left px-3 py-2 text-[12px] text-[#374151] hover:bg-[#F9F8F6]"
-                              >
-                                {item}
-                              </button>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </td>
                   </tr>
                 );
               })}
               {filteredPatients.length === 0 && (
                 <tr>
-                  <td colSpan={10} className="px-4 py-10 text-center text-[13px] text-[#9CA3AF]">
+                  <td colSpan={9} className="px-4 py-10 text-center text-[13px] text-[#9CA3AF]">
                     No patients match your current filters.
                   </td>
                 </tr>

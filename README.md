@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stellest AI - Clinical Myopia Decision Support
 
-## Getting Started
+Stellest AI is a clinical dashboard and assessment platform for myopia progression tracking, risk stratification, treatment planning, and report generation.
 
-First, run the development server:
+This project is built with Next.js App Router and includes:
+
+- protected dashboard shell (sidebar + topbar)
+- patient management and assessment workflows
+- visual analytics with forecasting charts
+- report generation and printable clinical PDF output
+
+## Product Design Goals
+
+- Keep the interface clinician-first: clear information hierarchy, low visual noise.
+- Use consistent risk language across all pages (High / Moderate / Low).
+- Present complex analytics in explainable, decision-oriented layouts.
+- Support both on-screen workflows and print-ready clinical documentation.
+
+## Main Screens
+
+- `Dashboard` - quick clinic overview, risk distribution, overdue follow-ups.
+- `Patients` - searchable/filterable patient registry with risk and progression context.
+- `New Assessment` - multi-step data capture flow for refractive and lifestyle inputs.
+- `Reports` - generated clinical notes, summaries, exports, and preview panel.
+- `Visual Analytics` - progression forecasting, cohort benchmarking, treatment scenarios.
+- `Print Report` - A4 single-page clinical report at `/reports/[id]/print`.
+
+## Design System Snapshot
+
+- **Primary color:** `#1D9E75` (teal)
+- **Critical color:** `#DC2626` (red)
+- **Warning color:** `#D97706` (amber)
+- **Surface:** white cards on warm gray background (`#F7F6F3`)
+- **Border:** `#E5E4DF`
+- **Typography:** compact, clinical UI scale (`11px`-`18px` in key layouts)
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS
+- Chart.js (CDN on analytics/print pages)
+
+## Project Structure
+
+```txt
+app/
+  (protected)/
+    analytics/
+    assessment/
+    dashboard/
+    patients/
+    reports/
+  api/
+  components/
+  reports/[id]/print/
+lib/
+hooks/
+types/
+store/
+```
+
+## Local Development
+
+### 1) Install dependencies
+
+```bash
+npm install
+```
+
+### 2) Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Current Scope
 
-To learn more about Next.js, take a look at the following resources:
+This repository currently focuses on frontend UX, interaction patterns, and clinical design prototypes. Some data flows are mocked in-page for demonstration and UI validation.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Print styles are included for report output.
+- Clinical content is decision-support oriented and intended for professional review.
