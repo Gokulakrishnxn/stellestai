@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type ReportType = "Clinical note" | "Patient summary" | "Full export";
 type ReportStatus = "Ready" | "Pending" | "Failed";
@@ -90,9 +91,9 @@ function statusConfig(status: ReportStatus) {
 }
 
 export default function ReportsPage() {
+  const router = useRouter();
   const [reports, setReports] = useState(INITIAL_REPORTS);
   const [filter, setFilter] = useState<FilterType>("All");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [patientQuery, setPatientQuery] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<(typeof PATIENT_OPTIONS)[number] | null>(null);
@@ -108,8 +109,6 @@ export default function ReportsPage() {
       return row.type === "Full export";
     });
   }, [reports, filter]);
-
-  const selectedReport = reports.find((r) => r.id === selectedId) ?? null;
 
   const patientHits = PATIENT_OPTIONS.filter((p) => {
     const q = patientQuery.trim().toLowerCase();
@@ -155,7 +154,6 @@ export default function ReportsPage() {
       status: "Pending",
     };
     setReports((prev) => [newRow, ...prev]);
-    setSelectedId(newRow.id);
     setModalOpen(false);
     setSelectedPatient(null);
     setPatientQuery("");
@@ -249,16 +247,15 @@ export default function ReportsPage() {
               </thead>
               <tbody>
                 {visibleReports.map((row) => {
-                  const selected = row.id === selectedId;
                   const typeTheme = typeStyles(row.type);
                   const statusTheme = statusConfig(row.status);
                   return (
                     <tr
                       key={row.id}
-                      onClick={() => setSelectedId(row.id)}
+                      onClick={() => router.push(`/reports/${row.id}`)}
                       className="group border-b border-[#E5E4DF] last:border-b-0 hover:bg-[#F9F8F6] cursor-pointer"
                     >
-                      <td className="px-4 py-3" style={{ borderLeft: selected ? "3px solid #1D9E75" : "3px solid transparent" }}>
+                      <td className="px-4 py-3" style={{ borderLeft: "3px solid transparent" }}>
                         <div className="flex items-center gap-2.5">
                           <span className="w-7 h-7 rounded-md bg-[#F0FBF7] inline-flex items-center justify-center">
                             <FileTextIcon />
@@ -325,53 +322,16 @@ export default function ReportsPage() {
           </div>
 
           <div className="bg-white border border-[#E5E4DF] rounded-[10px] p-4">
-            <h3 className="text-[13px] font-medium text-[#111827] mb-3">Report preview</h3>
-            {selectedReport ? (
-              <div className="border border-[#E5E4DF] rounded-lg p-3">
-                <div className="flex items-center justify-between">
-                  <p className="text-[12px] font-semibold text-[#111827]">{selectedReport.id}</p>
-                  <button
-                    onClick={() => onDownload(selectedReport.id)}
-                    className="text-[11px] text-[#1D9E75] font-medium hover:underline"
-                  >
-                    Download
-                  </button>
-                </div>
-                <p className="text-[12px] text-[#6B7280] mt-1">
-                  {selectedReport.patientName} · {selectedReport.patientId} · {selectedReport.age} yrs
-                </p>
-                <p className="text-[11px] text-[#9CA3AF] mt-1">Generated: {selectedReport.generatedAt}</p>
-                <p className="text-[11px] text-[#9CA3AF] mt-1">Type: {selectedReport.type}</p>
-
-                <div className="my-3 h-px bg-[#E5E4DF]" />
-                <p className="text-[10px] uppercase tracking-wider font-semibold text-[#6B7280]">Clinical note</p>
-                <div className="mt-2 h-[200px] overflow-auto border border-[#E5E4DF] rounded-lg bg-[#F9FAFB] p-2.5 text-[12px] text-[#374151]">
-                  Patient {selectedReport.patientName}, aged {selectedReport.age}, presents with a predicted myopia progression of 0.90 D/yr, placing the case in the high-risk category. Recommend stricter near-work hygiene, minimum 2 hours of outdoor activity daily, and follow-up refraction with axial length monitoring in 8 to 12 weeks.
-                </div>
-
-                <div className="my-3 h-px bg-[#E5E4DF]" />
-                <p className="text-[10px] uppercase tracking-wider font-semibold text-[#6B7280]">Patient summary</p>
-                <p className="mt-2 text-[12px] text-[#374151]">
-                  Your child&apos;s eye check shows that their glasses prescription is growing faster than average. We recommend daily outdoor time and regular follow-up visits to slow progression.
-                </p>
-
-                <div className="mt-3 flex gap-2">
-                  <button className="flex-1 h-8 text-[11px] rounded-md border border-[#E5E4DF] text-[#374151] hover:bg-[#F9F8F6]">
-                    Copy clinical note
-                  </button>
-                  <button className="flex-1 h-8 text-[11px] rounded-md border border-[#E5E4DF] text-[#374151] hover:bg-[#F9F8F6]">
-                    Copy summary
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="h-[280px] border border-dashed border-[#A7F3D0] rounded-lg bg-[#F8FFFC] flex flex-col items-center justify-center text-center px-4">
-                <span className="w-12 h-12 rounded-xl border border-[#A7F3D0] bg-white inline-flex items-center justify-center mb-3">
-                  <FileTextIcon />
-                </span>
-                <p className="text-[13px] text-[#6B7280]">Select a report to preview</p>
-              </div>
-            )}
+            <h3 className="text-[13px] font-medium text-[#111827] mb-3">Report overview</h3>
+            <div className="h-[280px] border border-dashed border-[#A7F3D0] rounded-lg bg-[#F8FFFC] flex flex-col items-center justify-center text-center px-4">
+              <span className="w-12 h-12 rounded-xl border border-[#A7F3D0] bg-white inline-flex items-center justify-center mb-3">
+                <FileTextIcon />
+              </span>
+              <p className="text-[13px] text-[#374151] font-medium">Open full report preview</p>
+              <p className="text-[12px] text-[#6B7280] mt-1">
+                Click any row in the reports table to view complete overview.
+              </p>
+            </div>
 
             <div className="mt-3 text-[11px] text-[#9CA3AF] flex items-center gap-2">
               <span className="inline-flex w-4 h-4 rounded-full bg-[#F3F4F6] items-center justify-center text-[9px]">G</span>
