@@ -180,7 +180,7 @@ export default function PrintReportPage() {
                 ["Date of birth", "14 March 2013 (Age: 11 years)"],
                 ["Gender", "Female"],
                 ["Contact", "+91 98765 43210"],
-                ["Assessed by", "Dr. Priya Sharma, Optometrist"],
+                ["Assessed by", "DR. LIPIKA ROY, Optometrist"],
                 ["Assessment date", "12 January 2025"],
                 ["Clinic", "Clarity Eye Clinic, Chennai"],
               ].map(([k, v]) => (
@@ -356,7 +356,7 @@ export default function PrintReportPage() {
               <p className="text-[10px] text-[#6B7280]">www.clarityeye.com</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] text-[#6B7280]">REP-0041 · Dr. Priya Sharma · 12 Jan 2025</p>
+              <p className="text-[10px] text-[#6B7280]">REP-0041 · DR. LIPIKA ROY · 12 Jan 2025</p>
               <p className="text-[10px] text-[#6B7280]">Page: 1 of 1</p>
             </div>
           </div>

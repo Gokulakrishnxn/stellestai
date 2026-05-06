@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSearch } from "@/app/contexts/SearchContext";
+import { supabase } from "@/utils/supabase/client";
 
 function SearchIcon() {
   return (
@@ -73,10 +74,14 @@ const NOTIFICATIONS = [
 ];
 
 export default function Topbar() {
+  const router = useRouter();
   const pathname = usePathname();
   const { search, setSearch } = useSearch();
   const [notifOpen, setNotifOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const notifRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
 
   const title =
     Object.entries(PAGE_TITLES).find(
@@ -88,10 +93,22 @@ export default function Topbar() {
       if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
         setNotifOpen(false);
       }
+      if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
+        setProfileOpen(false);
+      }
     }
     document.addEventListener("mousedown", onOutsideClick);
     return () => document.removeEventListener("mousedown", onOutsideClick);
   }, []);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    await supabase.auth.signOut();
+    setProfileOpen(false);
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <header className="h-auto min-h-[56px] bg-white border-b border-[#E5E4DF] flex flex-wrap lg:flex-nowrap items-center px-4 sm:px-6 py-2 gap-3 shrink-0">
@@ -149,20 +166,40 @@ export default function Topbar() {
         <div className="hidden sm:block w-px h-5 bg-[#E5E4DF]" />
 
         {/* Doctor avatar + name */}
-        <button className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-[#F7F6F3] transition-colors">
-          <div
-            className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "#1D9E75" }}
+        <div className="relative" ref={profileRef}>
+          <button
+            onClick={() => setProfileOpen((v) => !v)}
+            className="flex items-center gap-2 px-2 py-1.5 rounded-md hover:bg-[#F7F6F3] transition-colors"
           >
-            <span className="text-white text-[11px] font-semibold">PS</span>
-          </div>
-          <span className="hidden sm:inline text-[13px] font-medium text-[#111827]">
-            Dr. Priya Sharma
-          </span>
-          <span className="hidden sm:inline text-[#9CA3AF]">
-            <ChevronDownIcon />
-          </span>
-        </button>
+            <div
+              className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+              style={{ background: "#1D9E75" }}
+            >
+              <span className="text-white text-[11px] font-semibold">LR</span>
+            </div>
+            <span className="hidden sm:inline text-[13px] font-medium text-[#111827]">
+              DR. LIPIKA ROY
+            </span>
+            <span className="hidden sm:inline text-[#9CA3AF]">
+              <ChevronDownIcon />
+            </span>
+          </button>
+
+          {profileOpen && (
+            <div className="absolute right-0 top-full mt-2 w-[220px] bg-white border border-[#E5E4DF] rounded-xl z-50 overflow-hidden">
+              <p className="px-3.5 pt-3 pb-2 text-[12px] font-medium text-[#111827] border-b border-[#E5E4DF]">
+                DR. LIPIKA ROY
+              </p>
+              <button
+                onClick={handleLogout}
+                disabled={isLoggingOut}
+                className="w-full text-left px-3.5 py-2.5 text-[13px] text-[#B91C1C] hover:bg-[#FEF2F2] transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoggingOut ? "Logging out..." : "Logout"}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

@@ -177,71 +177,100 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex w-[220px] shrink-0 bg-white border-r border-[#E5E4DF] flex-col h-full overflow-y-auto">
-      {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 h-[56px] border-b border-[#E5E4DF] shrink-0">
-        <div
-          className="w-7 h-7 flex items-center justify-center shrink-0"
-          style={{ background: "#1D9E75", borderRadius: "10px" }}
-        >
-          <EyeIcon />
-        </div>
-        <span className="text-[16px] font-medium text-[#111827]">Stellest</span>
-      </div>
-
-      {/* Nav */}
-      <nav className="flex-1 px-2 py-3">
-        {NAV_ITEMS.map(({ label, href, Icon }) => {
-          const active =
-            pathname === href ||
-            (href !== "/" && pathname.startsWith(href + "/"));
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={[
-                "relative flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] mb-0.5 transition-colors",
-                active
-                  ? "bg-[#F0FBF7] text-[#1D9E75] font-medium"
-                  : "text-[#6B7280] hover:bg-[#F9F8F6] hover:text-[#111827]",
-              ].join(" ")}
-            >
-              {active && (
-                <span
-                  className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-full"
-                  style={{ background: "#1D9E75" }}
-                />
-              )}
-              <span className={active ? "text-[#1D9E75]" : "text-[#9CA3AF]"}>
-                <Icon />
-              </span>
-              {label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      {/* Doctor / clinic */}
-      <div className="border-t border-[#E5E4DF] px-4 py-3 shrink-0">
-        <p className="text-[11px] text-[#9CA3AF] mb-2.5 uppercase tracking-wider font-medium">
-          Clarity Eye Clinic
-        </p>
-        <div className="flex items-center gap-2">
+    <>
+      <aside className="hidden lg:flex w-[220px] shrink-0 bg-white border-r border-[#E5E4DF] flex-col h-full overflow-y-auto">
+        {/* Logo */}
+        <div className="flex items-center gap-2.5 px-4 h-[56px] border-b border-[#E5E4DF] shrink-0">
           <div
-            className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-            style={{ background: "#1D9E75" }}
+            className="w-7 h-7 flex items-center justify-center shrink-0"
+            style={{ background: "#1D9E75", borderRadius: "10px" }}
           >
-            <span className="text-white text-[11px] font-semibold">PS</span>
+            <EyeIcon />
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-medium text-[#111827] truncate">Dr. Priya Sharma</p>
-            <p className="text-[11px] text-[#9CA3AF]">Optometrist</p>
-          </div>
-          <button className="text-[#9CA3AF] hover:text-[#6B7280] shrink-0 transition-colors">
-            <DotsIcon />
-          </button>
+          <span className="text-[16px] font-medium text-[#111827]">Stellest</span>
         </div>
-      </div>
-    </aside>
+
+        {/* Nav */}
+        <nav className="flex-1 px-2 py-3">
+          {NAV_ITEMS.map(({ label, href, Icon }) => {
+            const active =
+              pathname === href ||
+              (href !== "/" && pathname.startsWith(href + "/"));
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={[
+                  "relative flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] mb-0.5 transition-colors",
+                  active
+                    ? "bg-[#F0FBF7] text-[#1D9E75] font-medium"
+                    : "text-[#6B7280] hover:bg-[#F9F8F6] hover:text-[#111827]",
+                ].join(" ")}
+              >
+                {active && (
+                  <span
+                    className="absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-full"
+                    style={{ background: "#1D9E75" }}
+                  />
+                )}
+                <span className={active ? "text-[#1D9E75]" : "text-[#9CA3AF]"}>
+                  <Icon />
+                </span>
+                {label}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Doctor / clinic */}
+        <div className="border-t border-[#E5E4DF] px-4 py-3 shrink-0">
+          <p className="text-[11px] text-[#9CA3AF] mb-2.5 uppercase tracking-wider font-medium">
+            Clarity Eye Clinic
+          </p>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+              style={{ background: "#1D9E75" }}
+            >
+              <span className="text-white text-[11px] font-semibold">PS</span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-medium text-[#111827] truncate">DR. LIPIKA ROY</p>
+              <p className="text-[11px] text-[#9CA3AF]">Optometrist</p>
+            </div>
+            <button className="text-[#9CA3AF] hover:text-[#6B7280] shrink-0 transition-colors">
+              <DotsIcon />
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile bottom navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 border-t border-[#E5E4DF] bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80">
+        <div className="grid grid-cols-6 px-1 py-1">
+          {NAV_ITEMS.map(({ label, href, Icon }) => {
+            const active =
+              pathname === href ||
+              (href !== "/" && pathname.startsWith(href + "/"));
+
+            return (
+              <Link
+                key={`mobile-${href}`}
+                href={href}
+                className={[
+                  "flex flex-col items-center justify-center gap-1 rounded-md px-1 py-2 text-[10px] leading-none",
+                  active ? "text-[#1D9E75]" : "text-[#6B7280]",
+                ].join(" ")}
+              >
+                <span className={active ? "text-[#1D9E75]" : "text-[#9CA3AF]"}>
+                  <Icon />
+                </span>
+                <span className="truncate max-w-full">{label.split(" ")[0]}</span>
+              </Link>
+            );
+          })}
+        </div>
+      </nav>
+    </>
   );
 }
